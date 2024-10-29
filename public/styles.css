@@ -1,0 +1,1058 @@
+/* google fonts */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+body{
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  background: #def0f3;
+}
+
+h1, h2, h3, h4, ul, li, a, p, input, label, button, div, footer{
+  margin: 0;
+  padding: 0;
+  font-family: 'Quicksand', sans-serif;
+  color: #071029;
+}
+ul{
+  list-style-type: none;
+}
+a{
+  text-decoration: none;
+}
+.nav-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 70px;
+}
+
+.oasis-logo{
+  width: 60%;
+
+}
+
+nav li{
+  margin-left: 20px;
+}
+nav li a{
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 1rem;
+  display: block;
+  padding: 10px 16px;
+  letter-spacing: 2px;
+
+}
+.headings{
+  text-align: center;
+}
+
+.home-title{
+   color: rgb(14, 14, 29);
+   font-size: 2rem;
+}
+.home-btns{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2rem;
+  padding: 0rem 1rem;
+}
+.btns{
+  margin-top: 30px;
+  border-radius: 3rem;
+  background: #96d8fe;
+  border:0;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 1.3rem;
+  display: flex;
+  letter-spacing: 2px;
+  align-items: center;
+ justify-content: center;
+  width: 45%;
+  height: 70px;
+  gap: 2rem;
+  padding-top: -rem;
+}
+
+form h2{
+  font-size: 2.4em;
+  font-weight: 900;
+  margin-bottom: 40px;
+}
+.credential-form-container{
+  width: 360px;
+  margin: 0 auto;
+  padding: 30px;
+  box-shadow: 1px 2px 3px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  background: white;
+}
+input{
+  padding: 10px 12px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  font-size: 1em;
+  width: 100%;
+}
+label{
+  display: block;
+  margin: 20px 0 10px;
+}
+button{
+  background: none;
+  border:0;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 0.8em;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+.credential-btns{
+  display: flex;
+  text-transform: uppercase;
+  justify-content: space-between;
+}
+.error{
+  color: #ff0099;
+  margin: 10px 2px;
+  font-size: 0.8em;
+  font-weight: bold;
+}
+.password-container {
+  position: relative;
+  width: 100%;
+}
+
+.password-container input {
+  width: 100%;
+  padding-right: 50px; /* Make space for the toggle button */
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2em;
+}
+.toggle-password i {
+  color: #333; /* You can adjust the color as needed */
+}
+.home-hr{
+  border: none;
+  border-top: 2px dashed #333; /* Dashed line */
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.home-cards{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.home-card{
+  background-color: #52bbf8;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.nav-header-home{
+  margin: auto;
+  padding: 1rem 1rem;
+  position: fixed;
+  background-color: #def0f3;
+  display: flex;
+  justify-content: space-between;
+  width: 95%;
+  top: 0;
+  left: 0;
+  gap: 1rem;
+  align-items: center;
+  z-index: 999;
+
+}
+.menu{
+  font-size: 2rem;
+}
+
+.headinghr{
+ width: 100%;
+ border: none;
+ border-top: 1px solid rgb(214, 214, 214);
+}
+.notification{
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  position: relative;
+  
+}
+.alarmicon{
+  display: flex;
+}
+.noticon{
+  font-size: 1.5rem;
+}
+.notialarm{
+  background-color: red;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  top: .2rem;
+  right: 0;
+
+}
+.route-toggles {
+  background-color: #071029;
+  color: #fff;
+  font-weight: 700;
+  padding: 0.8rem;
+  border-radius: 2rem;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.route-toggles:hover {
+  background-color: #0a1a3d;
+  transform: scale(1.05); 
+  animation: popIn 0.5s ease-in-out;
+}
+
+.my-listings-toggle {
+  color: #000; 
+  transition: font-weight 0.3s; 
+}
+
+.my-listings-toggle:hover {
+  font-weight: 600; 
+  color: #191d55;
+}
+
+
+
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: -500px; /* Initially hidden */
+  background-color: #fff;
+  width: 250px;
+  box-shadow: 3px 15px 15px grey;
+  height: 100vh;
+  padding: 1.5rem;
+  font-weight: 600;
+  z-index: 1000;
+  transition: left 0.3s ease; /* Smooth slide-in/out effect */
+}
+
+.side-menu.open {
+  left: 0; /* Slide the sidebar in */
+}
+
+.toggle-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border: none; /* Remove default border */
+  border-radius: 0.25rem; /* Rounded corners for the button */
+}
+
+.toggle-btn:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+.side-menu-toggles {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.side-menu-toggles i {
+  font-weight: 700;
+  cursor: pointer;
+}
+.ri-home-fill{
+  font-size: 2.5rem;
+}
+
+.profile-container {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1rem; /* Space between profile elements */
+}
+
+.profile {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%; /* Circular profile image */
+}
+
+.side-menu-setting {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Space between menu items */
+}
+
+.menu-setting {
+  display: flex;
+  align-items: center; /* Align icon and text vertically */
+  gap: .5rem;
+  padding: 1rem 0;
+  transition: background-color 0.3s ease; /* Smooth background color change */
+}
+
+.menu-setting a {
+  text-decoration: none; /* Remove default underline from links */
+  color: inherit; /* Inherit text color from parent */
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.menu-setting.active {
+  background-color: #7880e9; /* Active background color */
+  color: #fff; /* Text color in active state */
+  border-radius: 2rem;
+  margin-left: -1rem;
+  padding: 1rem;
+}
+
+.menu-setting.active a {
+  color: #fff; /* Ensure the link text also turns white */
+}
+
+.menu-setting i {
+  font-size: 1.2rem; /* Adjust icon size */
+}
+
+.menu-setting p {
+  margin: 0; /* Remove default margin */
+  font-size: 1rem; /* Adjust text size */
+}
+
+.hidden {
+  visibility: hidden;
+}
+.confirmation-popup {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  width: 85%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 1rem 0;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1002;
+  animation: slideDown 0.5s forwards;
+  animation: fadeIn 0.5s ease-in-out;
+}
+.confirmation-popup.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.popup-content {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 2rem;
+}
+.popup-buttons {
+  margin-top: 20px;
+}
+.popup-buttons button {
+  margin: 5px;
+}
+.icon{
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #85baf1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  margin-top: 1rem;
+}
+
+
+.confirm-delete{
+  background-color: #6cc3f5;;
+  padding: .9rem;
+  width: 9rem;
+  border-radius: .5rem;
+  transition: background-color 0.3s ease, color 0.3 ease, transform 0.3s ease;
+}
+
+.confirm-delete:hover{
+  transition: background-color 0.3s ease, color 0.3 ease, transform 0.3s ease;
+  transform: scale(1.05);
+  background-color: #38647e;
+  color: #fff;
+}
+@keyframes slideDown {
+  0% {
+      top: -100%;
+      opacity: 0;
+  }
+  100% {
+      top: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 1;
+  }
+}
+.show {
+  display: block;
+  animation: slideDown 0.5s forwards;
+}
+.confirm-form-container{
+  margin-top: 1rem;
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
+  flex-direction: column;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.confirm-form-container label{
+  font-weight: 700;
+}
+
+.confirm-heading{
+  font-size: 1.5rem;
+  margin-bottom: 0;
+}
+
+/* Overlay styles */
+.overlay {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent */
+  z-index: 999; 
+}
+
+.overlay2 {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent */
+  z-index: 1001; 
+}
+.overlay.open, .overlay2.open {
+  display: block; /* Show when sidebar is open */
+}
+
+.dashboard{
+  margin-top: 5rem;
+}
+.dashboard-header{
+  margin-left: 1rem;
+}
+.apartment-info-container{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.apartment-info{
+  width: 190px;
+  height: 190px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 1rem;
+  border-radius: 1rem;
+  background-color: #fff;
+  padding: 1rem;
+  text-align: center;
+}
+.apartment-info-icon{
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color:#6cc3f5;
+  border-radius: 50%;
+  font-size: 2rem;
+}
+.apartment-info-description{
+  font-weight: 800;
+  margin-top: .5rem;
+}
+
+.transaction-container,
+ .emergency-container{
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 2rem;
+  margin: 1rem 1rem;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.transaction-container-header,
+.emergency-container-header{
+  font-weight: 600;
+}
+.transaction-lists{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+}
+.transaction-list{
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+.transaction-lists:hover{
+  background-color: rgba(128, 128, 128, 0.3);
+border-radius: .5rem;
+}
+.transaction-list i{
+  color: rgb(3, 189, 3);
+}
+.list-description{
+  font-size: .8rem;
+}
+.transaction-name{
+  font-weight: 600;
+}
+
+.emergency-container{
+  margin-bottom: 2rem;
+}
+.profile-section{
+  margin-top: 5rem;
+}
+
+.profile-header{
+  margin-left: .8rem;
+}
+
+.profile-container{
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 2rem;
+  margin: 1rem 1rem;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.profile-photo-container{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.profile-photo{
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+.file-container{
+  display: flex;
+  flex-direction: column;
+}
+.file-container input{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 100%;
+}
+.upload-photo{
+  background-color: #6cc3f5;
+  padding: 1rem;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; /* Corrected spelling and added transition effects */
+}
+.upload-photo:hover {
+  z-index: 0;
+  background-color: #38647e;
+  color: #fff;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; /* Corrected spelling and added transition effects */
+  transform: scale(1.05); /* Slightly enlarges the element on hover */
+}
+.delete {
+  transition: color 0.3s ease; /* Smooth color transition over 0.3 seconds */
+}
+
+.delete:hover {
+  color: red;
+}
+
+.profile-form-container{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+fieldset{
+  margin: 1rem 0 ;
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+}
+
+.radio{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.radio input{
+  height: 1.5rem;
+}
+.profile-save{
+  cursor: pointer;
+}
+
+.account-setting{
+  margin-top: 5rem;
+}
+
+.update-form-container{
+  background-color: #fff;
+  margin: .5rem;
+  padding: 1rem;
+  border-radius: 2rem;
+  animation: fadeIn 0.5s ease-in-out;
+}
+.update-form-container h2{
+  font-size: 1.5rem;
+  color: #2c6383;
+}
+
+.update-form-container label{
+  font-weight: 700;
+}
+.update-buttons{
+  margin-top: 1rem;
+  display: flex;
+  gap: 3rem;
+  margin-bottom: 2rem;
+}
+
+.save-button{
+  background-color: #6cc3f5;;
+  padding: .9rem;
+  width: 9rem;
+  border-radius: .5rem;
+  transition: background-color 0.3s ease, color 0.3 ease, transform 0.3s ease;
+}
+
+.save-button:hover{
+  transition: background-color 0.3s ease, color 0.3 ease, transform 0.3s ease;
+  transform: scale(1.05);
+  background-color: #38647e;
+  color: #fff;
+}
+.cancel-button{
+  transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+}
+
+.cancel-button:hover{
+ color: red;
+}
+
+.forgot-password-form-container{
+  background-color: white;
+  padding: 2rem;
+  border-radius: 2rem;
+}
+
+.forgot-password-form-container .email{
+  font-weight: 700;
+}
+
+.credential-btns button {
+  background-color: #96d8fe;
+  padding: 1rem;
+  border-radius: 2rem;
+  height: 50px;
+  margin-top: 1rem;
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Adjusted transition timing */
+}
+
+.credential-btns button:hover {
+  background-color: #5e879e;
+  color: white;
+  transform: scale(1.005); /* Scale the button slightly */
+}
+.menu-setting {
+  position: relative;
+}
+.dropdown-setting{
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+
+}
+
+.dropdown-menu {
+  position: relative;
+  animation: fadeIn 0.5s ease-in-out;
+}
+.dropdown-menu a {
+  display: block;
+  padding: 8px 16px;
+  text-decoration: none;
+  color: #333;
+  font-size: 1.1rem;
+  border-radius: 2rem;
+}
+.dropdown-menu a:hover {
+  background-color: #f1f1f1;
+}
+.form-container {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  max-width: 500px;
+  margin: 3rem;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.form-title {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #666;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group input[type="file"],
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus,
+.form-group input[type="tel"]:focus,
+.form-group textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  outline: none;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  animation: popIn 0.5s ease-in-out;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(-20px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+@keyframes popIn {
+  from {
+      transform: scale(0.9);
+  }
+  to {
+      transform: scale(1);
+  }
+}
+
+.sell-section {
+  margin-top: 7rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.apartment-photo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.apartment-photo {
+  --photosize: 100%;
+  max-width: var(--photosize);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sellnbuy-section {
+  margin-top: 7rem;
+  padding: 2rem;
+}
+
+.apartment-card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.apartment-card {
+  max-width: 300px;
+  max-height: 550px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #fff;
+  animation: fadeIn 0.5s ease-in-out;
+
+}
+
+.apartment-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.apartment-card-image {
+  width: 100%;
+  height: 300px;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.apartment-card header {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.apartment-card p {
+  font-size: 0.9rem;
+  margin: 0.3rem 0;
+}
+
+.apartment-card a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.apartment-card a:hover {
+  text-decoration: underline;
+}
+.apartment-card-container button{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border: 1px solid blue;
+  padding: .6rem;
+  border-radius: 3rem;
+  margin-top: 1rem;
+  color: red;
+  animation: popIn 0.5s ease-in-out;
+  transition: background-color 0.3s, transform 0.3s;
+  
+}
+
+.apartment-card-container button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+  color: white;
+}
+
+.makepayment-section{
+  margin-top: 7rem;
+  padding: 1rem;
+
+}
+
+.payment-container{
+  max-width: 700px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(199, 197, 197);
+  border-radius: 1rem;
+}
+.payment-top{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
+.protection-shield{
+  width: 40px;
+}
+.shield{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hr-payment{
+  border: none;
+  border-top: 1px solid rgb(90, 89, 89);
+  width: 100%;
+  margin-bottom: 1rem;
+}
+.payment-header-container{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.payer-info{
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+  gap: 0;
+}
+.payment-image{
+  --photosize-payment: 200px;
+  width: var(--photosize-payment);
+  border-radius: 50%;
+}
+.receiver-title{
+  margin-bottom: .5rem;
+  text-align: center;
+}
+.sender-title,
+.sender-apt-title{
+  margin: 0;
+  text-align: left;
+}
+
+.mpesa-sect{
+  display: flex;
+  align-items: center;
+  margin-top: 2rem;
+  font-size: 1rem;
+}
+
+.lipa_na_mpesa{
+  width: 40px;
+  
+}
+.process-payment{
+  width: 100%;
+  margin: 0 3rem;
+}
+.process-payment label{
+  font-weight: 500;
+ }
+ .process-payment input{
+  background-color: #494949;
+  border: none;
+  color: white;
+ }
+ .process-payment input[type="tel"]:focus,
+ .process-payment input[type="number"]:focus{
+   border-color: #007bff;
+   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+   outline: none;
+ }
+  
+ .payment-btns{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  gap: 1rem;
+
+ }
+ .btns-payment {
+  width: 100%;
+  height: 40px;
+  border-radius: 2rem;
+  color: white;
+ }
+ .pay-btn{
+  background-color: #028a2b;
+ 
+ }
+ .cancel-btn{
+  background-color: #8a0202;
+ 
+ }
+footer{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 5rem;
+  color: #191d55;
+ width: 100%;
+}

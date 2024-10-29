@@ -1,0 +1,72 @@
+<%- include('partials/headerhome'); -%>
+
+<section class="dashboard">
+    <hr class="headinghr">
+    <div class="dashboard-header">
+        <h1>Dashboard</h1>
+    </div>
+    <div class="apartment-info-container">
+        <div class="apartment-info">
+            <div class="apartment-info-icon"><i class="ri-home-line"></i></div>
+            <p class="apartment-info-description"><%= user ? user.apartmentSize : 'N/A' %></p>
+            <p>Apartment Size</p>
+        </div>
+
+        <div class="apartment-info">
+            <div class="apartment-info-icon"><i class="ri-money-dollar-circle-line"></i></div>
+            <p class="apartment-info-description">Ksh <%= user ? user.serviceCharge : 'N/A' %>/year</p>
+            <p>Service Charge</p>
+        </div>
+
+        <div class="apartment-info">
+            <div class="apartment-info-icon"><i class="ri-calendar-line"></i></div>
+            <p class="apartment-info-description">15th of every month</p>
+            <p>Due Date</p>
+        </div>
+
+        <div class="apartment-info">
+            <div class="apartment-info-icon"><i class="ri-wallet-line"></i></div>
+            <p class="apartment-info-description">Ksh 30,000</p>
+            <p>Balance</p>
+        </div>
+    </div>
+
+    <div class="transaction-container">
+        <div class="transaction-container-header">
+            <p>Recent Transactions</p>
+        </div>
+        <hr class="headinghr">
+        <div>
+            <div class="transaction-lists">
+                <div class="transaction-list">
+                    <i class="ri-file-list-2-line"></i>
+                    <div>
+                        <p class="transaction-name">Gideon Rono</p>
+                        <p class="list-description">11/10/2024 . Via Paybill</p>
+                    </div>
+                </div>
+                <p>Ksh. 20,000</p>
+            </div>
+            <div class="transaction-lists">
+                <div class="transaction-list">
+                    <i class="ri-file-list-2-line"></i>
+                    <div>
+                        <p class="transaction-name">Gideon Rono</p>
+                        <p class="list-description">11/10/2024 . Via Paybill</p>
+                    </div>
+                </div>
+                <p>Ksh. 20,000</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="emergency-container">
+        <div class="emergency-container-header">
+            <p>Emergency Alerts</p>
+        </div>
+        <hr class="headinghr">
+        <div class="emergency-lists">
+            <p>No active alerts. Stay safe!</p>
+        </div>
+    </div>
+</section>

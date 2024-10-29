@@ -1,0 +1,92 @@
+<%- include('partials/headerhome'); -%>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css">
+
+<section class="profile-section">
+    <div class="profile-header">
+        <h1>Update Profile</h1>
+    </div>
+    <div class="profile-container">
+        <form class="profile-form-container" id="updateForm">
+            <label for="userName">Name</label>
+            <input type="text" id="userName" value="<%= record ? record.userName : '' %>" name="userName" required/>
+            
+            <label for="apartmentNo">Apartment No.</label>
+            <input type="text" id="apartmentNo" value="<%= record ? record.apartmentNo : '' %>" name="apartmentNo" required/>
+
+            <fieldset>
+                <legend>Apartment Size</legend>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="apartmentSize" value="Half" <%= record.apartmentSize === 'Half' ? 'checked' : '' %> required/> Half Size
+                    </label><br>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="apartmentSize" value="Single" <%= record.apartmentSize === 'Single' ? 'checked' : '' %> /> Single
+                    </label><br>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="apartmentSize" value="Double" <%= record.apartmentSize === 'Double' ? 'checked' : '' %> /> Double
+                    </label><br>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="apartmentSize" value="1.5" <%= record.apartmentSize === '1.5' ? 'checked' : '' %> /> 1.5 Apartment
+                    </label><br>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="apartmentSize" value="Shops" <%= record.apartmentSize === 'Shops' ? 'checked' : '' %> /> Shops
+                    </label><br>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="apartmentSize" value="Duplex" <%= record.apartmentSize === 'Duplex' ? 'checked' : '' %> /> Duplex
+                    </label>
+                </div>
+            </fieldset>
+
+            <div class="update-save">
+                <input type="submit" value="Update"/>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+    const form = document.getElementById('updateForm');
+    
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        
+        const userName = form.userName.value.trim();
+        const apartmentNo = form.apartmentNo.value.trim();
+        const apartmentSize = form.apartmentSize.value; // Radio button values should be captured correctly
+
+        const recordId = "<%= record ? record.id : '' %>";
+
+        console.log("Submitting update with:", { userName, apartmentNo, apartmentSize }); // Debugging log
+
+        try {
+            const res = await fetch(`/records/${recordId}`, {
+                method: 'PATCH',
+                body: JSON.stringify({ userName, apartmentNo, apartmentSize }),
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                alert('Record updated successfully.');
+                setTimeout(() => {
+                    location.assign('/dashboard'); // Redirect to dashboard after a brief delay
+                }, 1000); // 1 second delay before redirect
+            } else {
+                alert(data.error || 'An unknown error occurred.'); // Handle errors more gracefully
+            }
+        } catch (error) {
+            console.error("Fetch error:", error);
+            alert('There was an error updating the record. Please try again.'); // User-friendly error message
+        }
+    });
+</script>

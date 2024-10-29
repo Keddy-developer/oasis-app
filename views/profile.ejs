@@ -1,0 +1,175 @@
+<%- include('partials/headerhome'); -%>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css">
+
+<section class="profile-section">
+    <hr class="headinghr">
+    <div class="profile-header">
+        <h1>My Profile</h1>
+    </div>
+    <div class="profile-container">
+        <div class="profile-photo-container">
+            <img class="profile-photo" src="<%= user && user.photoUrl ? user.photoUrl : '/profile.jfif' %>" alt="Profile">
+            <div class="file-container">
+                <input type="file" id="profilePhoto" name="profilePhoto" accept="image/*" />
+            </div>
+            <button class="upload-photo" onclick="uploadPhoto(event)">
+                <i class="ri-upload-line"></i>
+            </button>
+            <button class="delete" id="deleteButton" onclick="deletePhoto(event)" 
+                <%= user && user.photoUrl ? '' : 'disabled' %>>
+                Delete
+            </button>
+        </div>
+
+        <form class="profile-form-container">
+            <label for="name">Name</label>
+            <input type="text" id="userName" value="<%= user ? user.userName : '' %>" name="name" required/>
+           
+            <label for="apartmentNo">Apartment No.</label>
+            <input type="text" id="apartmentNo" name="apartmentNo" required/>
+
+            <fieldset>
+                <legend>Apartment Size</legend>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="apartmentSize" value="Half" required/> Half Size
+                    </label><br>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="apartmentSize" value="Single"/> Single
+                    </label><br>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="apartmentSize" value="Double"/> Double
+                    </label><br>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="apartmentSize" value="1.5"/> 1.5 Apartment
+                    </label><br>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="apartmentSize" value="Shops"/> Shops
+                    </label><br>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="apartmentSize" value="Duplex"/> Duplex
+                    </label>
+                </div>
+            </fieldset>
+            <div class="profile-save">
+                <input type="submit" value="Save"/>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+    async function uploadPhoto(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        const photoInput = document.getElementById('profilePhoto');
+        const userName = form.name.value.trim();
+        const apartmentNo = form.apartmentNo.value.trim();
+
+        if (photoInput.files.length === 0) {
+            alert('Please select a photo to upload.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('profilePhoto', photoInput.files[0]);
+        formData.append('userName', userName);
+        formData.append('apartmentNo', apartmentNo);
+
+        try {
+            const res = await fetch('/upload-photo', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await res.json();
+            if (data.error) {
+                alert(data.error);
+            } else {
+                alert('Photo uploaded successfully');
+                document.querySelector('.profile-photo').src = data.photoUrl; // Update the displayed photo
+
+                // Enable the delete button after a successful upload
+                document.getElementById('deleteButton').disabled = false;
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Error uploading photo');
+        }
+    }
+
+    async function deletePhoto(event) {
+        event.preventDefault(); // Prevent the default button action
+
+        const userName = form.name.value.trim(); // Get userName value from the form
+        const apartmentNo = form.apartmentNo.value.trim(); // Get apartmentNo value from the form
+
+        try {
+            const res = await fetch('/delete-photo', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userName, apartmentNo }),
+            });
+
+            const data = await res.json();
+            console.log(data)
+            if (data.error) {
+                alert(data.error);
+            } else {
+                alert(data.message);
+                document.querySelector('.profile-photo').src = '/profile.jfif'; // Reset to default image
+
+                // Disable the delete button after deletion
+                document.getElementById('deleteButton').disabled = true;
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Error deleting photo');
+        }
+    }
+
+    const form = document.querySelector('.profile-form-container');
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault(); // Prevents the default form submission behavior
+
+        // Getting form values
+        const userName = form.name.value.trim();
+        const apartmentNo = form.apartmentNo.value.trim();
+        const apartmentSize = form.apartmentSize.value;
+
+        console.log(userName, apartmentNo, apartmentSize);
+        try {
+            const res = await fetch ('/records', {
+                method: 'POST',
+                body: JSON.stringify({apartmentNo, userName, apartmentSize}),
+                headers: {'Content-Type': 'application/json'}
+            });
+
+            const data = await res.json();
+            console.log(data);
+            if(data.error) {
+                alert(data.error);
+            } else {
+                alert('Profile saved successfully.');
+                location.assign('/dashboard');
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+    });
+
+</script>

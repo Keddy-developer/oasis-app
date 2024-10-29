@@ -1,0 +1,87 @@
+<%- include('partials/headerhome'); -%>
+
+<section class="sell-section">
+  <div class="form-container">
+    <h2 class="form-title">List Your Apartment</h2>
+    <form id="apartmentForm" enctype="multipart/form-data">
+        <div class="form-group">
+          <div class="apartment-photo-container">
+            <img id="apartmentPhotoPreview" class="apartment-photo" src="<%= user && user.apartmentPhotoUrl ? user.apartmentPhotoUrl : '/apartment-icon.jfif' %>" alt="Apartment Preview">
+          </div>
+            <label for="apartmentPhotoUrl">Apartment Photo</label>
+            <input type="file" id="apartmentPhotoUrl" name="apartmentPhotoUrl" accept="image/*" required />
+        </div>
+        <div class="form-group">
+            <label for="sellApartmentSize">Apartment Size</label>
+            <input type="text" id="sellApartmentSize" name="sellApartmentSize" maxlength="40" required />
+        </div>
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="number" id="price" name="price" required />
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="4" maxlength="70"required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" required />
+        </div>
+        <button type="submit" class="submit-button">Submit Listing</button>
+    </form>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('apartmentForm');
+  const apartmentPhotoInput = document.getElementById('apartmentPhotoUrl');
+  const apartmentPhotoPreview = document.getElementById('apartmentPhotoPreview');
+
+  // Event listener for file input change
+  apartmentPhotoInput.addEventListener('change', (event) => {
+    const file = event.target.files[0]; // Get the selected file
+    if (file) {
+      const reader = new FileReader(); // Create a FileReader to read the file
+      reader.onload = (e) => {
+        apartmentPhotoPreview.src = e.target.result; // Set the src of the image to the file data
+      };
+      reader.readAsDataURL(file); // Read the file as a Data URL
+    }
+  });
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault(); // Prevent default form submission
+
+    const apartmentPhoto = apartmentPhotoInput.files[0];
+    const sellApartmentSize = form.sellApartmentSize.value.trim();
+    const price = form.price.value.trim();
+    const description = form.description.value.trim();
+    const phone = form.phone.value.trim();
+
+    const formData = new FormData(); // Using FormData for file upload
+    formData.append('apartmentPhotoUrl', apartmentPhoto);
+    formData.append('sellApartmentSize', sellApartmentSize);
+    formData.append('price', price);
+    formData.append('description', description);
+    formData.append('phone', phone);
+
+    try {
+      const res = await fetch('/list', {
+        method: 'POST',
+        body: formData // Sending the form data with the file
+      });
+
+      const data = await res.json();
+      console.log(data);
+
+      if (data.error) {
+        alert(data.error);
+      } else {
+        alert('Apartment successfully listed');
+        location.assign('/listings');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  });
+</script>

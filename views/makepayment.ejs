@@ -1,0 +1,50 @@
+<%- include('partials/headerhome'); -%>
+
+<section class="makepayment-section">
+  
+  <div class="payment-container">
+    <div class="payment-top">
+      <h4>Make a Payment</h4>
+      <div class="shield">
+        <img class="protection-shield" src="/protection.png" alt="Mpesa Logo">
+        <small>PAYMENT SECURE</small>
+      </div>
+  </div>
+  <hr class="hr-payment">
+    <div class="payment-header-container">
+      <img class="payment-image" src="<%= user && user.photoUrl ? user.photoUrl : '/profile.jfif' %>" alt="User Profile Picture">
+      <div class="payer-info">
+        <h5 class="receiver-title">Oasis Residence Association Malindi Paybill</h5>
+        <h6 class="sender-title">Name: <%= user ? user.userName : 'N/A' %></h6>
+        <h6 class="sender-apt-title">Apartment No: <%= user ? user.apartmentNo : 'N/A' %></h6>
+      </div>
+      <div class="payment response"></div>
+      <div class="mpesa-sect">
+        <img class="lipa_na_mpesa" src="/lipa_na_mpesa.png" alt="Mpesa Logo">
+        <p>Via Mpesa Paybill</p>
+      </div>
+    </div>
+    
+    <form class="process-payment" action="/makepayment" method="POST"> <!-- Add action for form submission -->
+      <div>
+        <label for="phone">Mpesa No.</label>
+        <input type="tel" id="phone" name="phone" required>
+      </div>
+      <div>
+        <label for="amount">Enter Amount</label>
+        <input type="number" id="amount" name="amount" required min="1" step="0.01">
+      </div>
+      <div class="payment-btns">
+        <button class="btns-payment  pay-btn" type="submit">Pay</button>
+        <button class="btns-payment cancel-btn" onclick="window.history.back();">Cancel</button> <!-- Change button to call back functionality -->
+      </div>
+    </form>
+  </div>
+  
+</section>
+
+<script>
+  const paymentResponse = document.querySelector('.payment.response')
+
+  paymentResponse.textContent = data.errorMessage
+</script>

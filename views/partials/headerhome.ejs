@@ -1,0 +1,303 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <nav class="nav-header-home">
+    <i class="ri-menu-line menu" onclick="toggleSidebar()"></i> <!-- Fixed the closing quote -->
+  
+      <% if (currentRoute === '/makepayment') { %>
+        <a href="/"><div class="headerhome-logo">
+          <img class="oasis-logo" src="/oasis-logo.png" alt="Oasis Logo">
+        </div>
+        </a>
+      <% } else if (currentRoute === '/list') { %>
+          <a href="/"><div class="headerhome-logo">
+            <img class="oasis-logo" src="/oasis-logo.png" alt="Oasis Logo">
+          </div>
+          </a>
+      <% } else { %>
+        <div></div>
+      <% } %>
+      <% if (currentRoute === '/dashboard') { %>
+        <div class="notification">
+        <i class="ri-notification-2-fill noticon"></i>
+        <div class="notialarm"></div>
+      </div>
+      <% } else { %>
+        <div></div>
+      <% } %>
+     
+      <% if (currentRoute === '/listings') { %>
+        <a href="/mylistings">
+          <div class="my-listings-toggle">
+            My Listings
+          </div>
+        </a>
+        <a href="/list">
+          <div class="route-toggles">
+            Sell Apartment
+          </div>
+        </a>
+      <% } else if (currentRoute === '/makepayment'){ %>
+        <div></div>
+      <% } else if (currentRoute === '/list' ){ %>
+        <a href="/listings">
+          <div class="route-toggles">
+            Listings
+          </div>
+        </a>
+        <% } else if (currentRoute === '/mylistings' ){ %>
+          <a href="/list">
+            <div class="route-toggles">
+              Add List
+            </div>
+          </a>
+      <% } else { %>
+        <a href="/makepayment">
+          <div class="route-toggles">
+            Make a Payment
+           </div>
+        </a> 
+      <% } %>
+      
+    </div>
+  </nav>
+
+ 
+
+  <div>
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div> <!-- Overlay element -->
+    
+    <div class="side-menu" id="sidebar">
+      <div class="side-menu-toggles">
+        <a href="/"><h5>HOME</h5></a>
+        <i class="ri-close-large-line" onclick="toggleSidebar()"></i>
+      </div>
+      <div class="profile-container">
+        <div class="profile-info">
+          <img class="profile" src="<%= user && user.photoUrl ? user.photoUrl : '/profile.jfif' %>" alt="Profile">
+        </div>
+        <p><%= user.userName %></p>
+      </div>
+      <div class="side-menu-setting">
+        <div class="menu-setting" id="dashboard">
+          <a href="/dashboard">
+            <i class="ri-dashboard-line"></i>
+            <p>Dashboard</p>
+          </a>
+        </div>
+        <div class="menu-setting dropdown-setting" id="profile">
+          <!-- Profile Button -->
+          <a href="#" class="dropdown-toggle" onclick="toggleDropdown()">
+              <i class="ri-user-line"></i>
+              <p>My Profile</p>
+          </a>
+          
+          <!-- Dropdown Menu -->
+          <div class="dropdown-menu" id="profileDropdown" style="display: none;">
+              <a href="/records/<%= user.id %>/edit">Update Profile</a>
+              <a href="/profile">Create Profile</a>
+          </div>
+      </div>
+        <div class="menu-setting" id="settings"><a href="/updatePassword"><i class="ri-settings-3-line"></i><p>Account Settings</p></a></div>
+        <div class="menu-setting delete-account-button" id="delete" onclick="togglePopup()"><a><i class="ri-delete-bin-line"></i><p>Delete Account</p><a></a></div>
+        <div class="menu-setting " id="logout" onclick="togglePopup2()"><i class="ri-logout-circle-line"></i><p>Log Out</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay2" id="delete-overlay" onclick="togglePopup()"></div>
+  <div class="confirmation-popup delete-confirmation-popup hidden">
+    <div class="popup-content">
+        <div class="icon">
+            <i class="ri-delete-bin-line"></i>
+        </div>
+        <h1>Are you sure?</h1>
+        <p>Are you sure you want to delete your account? All data will be lost, except for your apartment number and transaction history, which will remain in our database.</p>
+        
+        <form class="confirm-form-container">
+          <h2 class="confirm-heading">Confirm your Credential</h2>
+          <label for="email">Email</label>
+          <input type="email" id="email2" name="email" required/>
+          <div class="email error"></div>
+          
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required/>
+          <div class="password error"></div>
+
+        <div class="popup-buttons">
+            <button class="confirm-delete" >Yes</button>
+            <button class="cancel-delete" onclick="togglePopup()">Cancel</button>
+        </div>
+      </form>
+    </div>
+</div>
+
+<div class="overlay2" id="logout-overlay" onclick="togglePopup2()"></div>
+  <div class="confirmation-popup logout-confirmation-popup hidden">
+    <div class="popup-content">
+       
+        <h4>Are you sure you want to log out?</h4>
+        
+        <div class="popup-buttons">
+           <a href="/logout"><button class="confirm-delete" >Yes</button></a>
+            <button class="cancel-delete" onclick="togglePopup2()">Cancel</button>
+        </div>
+      </form>
+    </div>
+</div>
+  
+
+
+  <script>
+    function toggleDropdown() {
+        var dropdown = document.getElementById("profileDropdown");
+        if (dropdown.style.display === "none") {
+            dropdown.style.display = "block";
+        } else {
+            dropdown.style.display = "none";
+        }
+    }
+
+      // Close dropdown if clicked outside
+      window.onclick = function(event) {
+        if(!event.target.matches('.dropdown-toggle')) {
+        var dropdowns = document.getElementsByClassName("dropdown-menu");
+          for ( var i = 0;i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if(openDropdown.style.display === 'block'){
+              openDropdown.style.display === 'none'
+            }
+          }
+        }
+      }
+
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('overlay');
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('open');
+    }
+    function togglePopup() {
+  const deleteOverlay = document.getElementById('delete-overlay');
+  const deletePopup = document.querySelector('.delete-confirmation-popup');
+  deleteOverlay.classList.toggle('open');
+  deletePopup.classList.toggle('show');
+}
+
+function togglePopup2() {
+  const logoutOverlay = document.getElementById('logout-overlay');
+  const logoutPopup = document.querySelector('.logout-confirmation-popup');
+  logoutOverlay.classList.toggle('open');
+  logoutPopup.classList.toggle('show');
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  const menuItems = document.querySelectorAll('.menu-setting a')
+
+  const currentPage = window.location.pathname;
+
+  menuItems.forEach(menuItem =>{
+    if(menuItem.getAttribute('href') === currentPage){
+      menuItem.parentElement.classList.add('active')
+    }
+  })
+})
+    const userData = {
+      name: user.userName,
+      logoUrl: "/oasis-logo.png",
+      homepageUrl: "/"
+    };
+
+    function renderUserInfo(user) {
+      const userNameElement = document.querySelector(".profile-container p");
+      userNameElement.textContent = user.name;
+
+      const logoElement = document.querySelector(".oasis-logo");
+      logoElement.src = user.logoUrl;
+
+      const homepageLink = document.querySelector(".side-menu-logo a");
+      homepageLink.href = user.homepageUrl;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderUserInfo(userData);
+    });
+    document.addEventListener('DOMContentLoaded', () => {
+  const deleteButton = document.querySelector('.delete-account-button');
+  const confirmationPopup = document.querySelector('.confirmation-popup');
+  const cancelButton = document.querySelector('.cancel-delete');
+  const confirmDeleteButton = document.querySelector('.confirm-delete');
+  const form = document.querySelector('.confirm-form-container');
+  const emailError = document.querySelector('.email.error');
+  const passwordError = document.querySelector('.password.error');
+
+  // Show the confirmation pop-up
+  deleteButton.addEventListener('click', () => {
+    confirmationPopup.classList.add('show');
+    confirmationPopup.classList.remove('hidden');
+  });
+
+  // Hide the confirmation pop-up
+  cancelButton.addEventListener('click', () => {
+    confirmationPopup.classList.remove('show');
+    confirmationPopup.classList.add('hidden');
+  });
+
+  // Handle the confirm delete action
+  confirmDeleteButton.addEventListener('click', async (event) => {
+    event.preventDefault(); // Prevent form submission default behavior
+
+    // Get the email and password values from the form
+    const email = form.email.value.trim();
+    const password = form.password.value.trim();
+
+    if (!email || !password) {
+  if (!email) {
+    emailError.textContent = 'Please provide your email address.';
+  }
+  if (!password) {
+    passwordError.textContent = 'Please enter your password.';
+  }
+  return; // Stop further execution if fields are empty
+}
+
+    // Reset previous error messages
+    emailError.textContent = '';
+    passwordError.textContent = '';
+
+    try {
+      const response = await fetch('/delete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      if (response.ok) {
+        alert('Account deleted successfully.');
+        window.location.href = '/'; // Redirect to the homepage
+      } else {
+        const errorData = await response.json();
+        emailError.textContent = errorData.errors.email || '';
+        passwordError.textContent = errorData.errors.password || '';
+
+        console.log(errorData.errors.password || '')
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred while deleting the account. Please try again.');
+    }
+  });
+});
+
+  </script>
+</body>
+</html>

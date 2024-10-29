@@ -1,0 +1,32 @@
+<%- include('partials/header'); -%>
+
+<header>
+  <div class="headings">
+    <h3 class="home-title">Welcome to Oasis Residence Association Portal</h3>
+    <p>Our platform is designed to make your life easier, providing residents
+      with essential services and resources at your fingertips.</p>
+    
+    <% if (!isLoggedIn) { %> <!-- Check if user is logged in -->
+      <div class="home-btns">
+        <a href="/login" class="btns">
+          <button class="btn">
+            Log in
+          </button>
+        </a>
+        <a href="/signup" class="btns">
+          <button class="btn">
+            Sign up
+          </button>
+        </a>
+      </div>
+    <% } %>
+  </div>
+  <hr class="home-hr">
+  <div class="home-cards">
+    <a href="/dashboard"><div class="home-card">Dashboard</div></a>
+    <a href="listings"><div class="home-card">Sell and Buy</div></a>
+    <a href="/makepayment"><div class="home-card">Make Payment</div></a>
+  </div>
+</header>
+
+<%- include('partials/footer'); -%>
