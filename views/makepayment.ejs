@@ -50,7 +50,14 @@
   paymentForm.addEventListener('submit', async (event) => {
     event.preventDefault(); // Prevent the default form submission
 
-    const formData = new FormData(paymentForm);
+    // Capture values inside the event listener
+    const phone = paymentForm.phone.value;
+    const amount = paymentForm.amount.value;
+
+    // Convert to international format if needed
+    const formattedPhone = phone.startsWith('07') ? '254' + phone.slice(1) : phone;
+
+    const formData = { phone: formattedPhone, amount };
     const data = new URLSearchParams(formData);
 
     try {
@@ -60,14 +67,11 @@
       });
       const result = await response.json();
 
-      if (response.ok) {
-        paymentResponse.textContent = result.message; // Success message
-      } else {
-        paymentResponse.textContent = result.message; // Error message
-      }
+      // Display the appropriate message based on the response
+      paymentResponse.textContent = result.message; 
     } catch (error) {
       paymentResponse.textContent = "❌ An error occurred while processing your payment.";
       console.error("Error:", error);
     }
-  });
+});
 </script>

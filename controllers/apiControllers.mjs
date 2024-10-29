@@ -51,7 +51,7 @@ export const stkpush_post = (req, res) =>{
       PartyA: phone, // Phone number to receive the STK push
       PartyB: "174379",
       PhoneNumber: phone,
-      CallBackURL: "http://localhost:3020/callback", // Corrected URL
+      CallBackURL: "https://249e-105-60-226-239.ngrok-free.app/api/callback", // Corrected URL
       AccountReference: "Oasis Pay",
       TransactionDesc: "Mpesa Daraja API STK push test",
 
