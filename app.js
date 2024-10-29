@@ -30,7 +30,9 @@ app.set('view engine', 'ejs');
 
 const dbURI = process.env.MONGODB_URI;
 mongoose.connect(dbURI)
-  .then(() => app.listen(3020))
+.then(() => app.listen(process.env.PORT || 3020, () => {
+    console.log(`Server is running on port ${process.env.PORT || 3020}`);
+}))
   .catch((err) => console.log(err));
 
 // routes
@@ -77,3 +79,5 @@ app.use(authRoutes);
 app.use(recordRoutes);
 app.use(sellRecordRoutes);
 app.use(apiRoutes);
+
+
