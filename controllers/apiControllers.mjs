@@ -8,7 +8,7 @@ async function getAccessToken(){
   const consumer_key = "F6cqEpbBs2qGjApzUzzXQKKGG4vnu4e6tRSVWNu1SGhpf6Kp"; // REPLACE IT WITH YOUR CONSUMER KEY
   const consumer_secret = "4hyl6ivfAjqZ44gmpIgFKSrGBMTxRzEEHQDOah45bEsfwhq261OaWJv1F70PFwmc"; // REPLACE IT WITH YOUR CONSUMER SECRET
   const url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
-   const auth = 'Basic'+ Buffer.from(consumer_key + ':' + consumer_secret).toString('base64')
+  const auth = 'Basic ' + Buffer.from(consumer_key + ':' + consumer_secret).toString('base64');
 
 
    try {
@@ -32,7 +32,7 @@ export const stkpush_post = (req, res) =>{
   getAccessToken()
   .then((accessToken)=>{
     const url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
-    const auth = 'Bearer' + accessToken;
+    const auth = 'Bearer ' + accessToken;
     const BusinessShortCode = "174379";
     const Passkey = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919';
     const timeStamp = moment().format('YYYYMMDDHHmmss')
@@ -61,12 +61,13 @@ export const stkpush_post = (req, res) =>{
       Authorization: auth
     },
   })
-  .then((response)=>{
-    res.json({message: "😀 Request is successfully done ✔✔."})
+  .then((response) => {
+    res.json({ message: "😀 Request is successfully done ✔✔." });
   })
-  .catch((error)=>{
-    res.status(500).json({ message: "❌ An error occurred." });
-  })
+  .catch((error) => {
+    console.error("Error during STK push:", error.response ? error.response.data : error.message);
+    res.status(500).json({ message: error.response ? error.response.data.errorMessage : "❌ An error occurred." });
+  });
   })
    
 

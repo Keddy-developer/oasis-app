@@ -1,3 +1,5 @@
+
+
 <%- include('partials/headerhome'); -%>
 
 <section class="makepayment-section">
@@ -24,7 +26,7 @@
       </div>
     </div>
     
-    <form class="process-payment" action="/makepayment" method="POST">
+    <form class="process-payment" id="paymentForm">
       <div>
         <label for="phone">Mpesa No.</label>
         <input type="tel" id="phone" name="phone" required pattern="[0-9]{10}">
@@ -43,7 +45,29 @@
 
 <script>
   const paymentResponse = document.querySelector('.payment.response');
+  const paymentForm = document.getElementById('paymentForm');
 
-  paymentResponse.textContent = data.errorMessage;
+  paymentForm.addEventListener('submit', async (event) => {
+    event.preventDefault(); // Prevent the default form submission
 
+    const formData = new FormData(paymentForm);
+    const data = new URLSearchParams(formData);
+
+    try {
+      const response = await fetch('/makepayment', {
+        method: 'POST',
+        body: data,
+      });
+      const result = await response.json();
+
+      if (response.ok) {
+        paymentResponse.textContent = result.message; // Success message
+      } else {
+        paymentResponse.textContent = result.message; // Error message
+      }
+    } catch (error) {
+      paymentResponse.textContent = "❌ An error occurred while processing your payment.";
+      console.error("Error:", error);
+    }
+  });
 </script>
