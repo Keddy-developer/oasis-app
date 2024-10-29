@@ -9,6 +9,8 @@ async function getAccessToken(){
   const consumer_secret = "4hyl6ivfAjqZ44gmpIgFKSrGBMTxRzEEHQDOah45bEsfwhq261OaWJv1F70PFwmc"; // REPLACE IT WITH YOUR CONSUMER SECRET
   const url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
   const auth = 'Basic ' + Buffer.from(consumer_key + ':' + consumer_secret).toString('base64');
+  console.log('Consumer Key:', consumer_key);
+  console.log('Consumer Secret:', consumer_secret);
 
 
    try {
@@ -36,7 +38,7 @@ export const stkpush_post = (req, res) =>{
     const BusinessShortCode = "174379";
     const Passkey = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919';
     const timeStamp = moment().format('YYYYMMDDHHmmss')
-    const password = 'Basic' + Buffer.from(BusinessShortCode + Passkey + timeStamp.toString('base64')) 
+    const password = 'Basic' + Buffer.from(BusinessShortCode + Passkey + timeStamp).toString('base64')
     
     const amount = req.body.amount;
     const phone = req.body.phone;
