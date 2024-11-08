@@ -21,13 +21,15 @@ export const newRecord_post = [
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const {  apartmentPhotoUrl, sellApartmentSize, price, description, phone,} = req.body;
+    const {  apartmentPhotoUrl, sellApartmentSize, bedroomsNo, squareFootage, price, description, phone,} = req.body;
     const user = req.user
     
     try {
 
 console.log({   apartmentPhotoUrl: `/uploads/${req.file.filename}`,
   sellApartmentSize,
+  bedroomsNo,
+  squareFootage,
   price, 
   description, 
   phone, 
@@ -36,6 +38,8 @@ console.log({   apartmentPhotoUrl: `/uploads/${req.file.filename}`,
       const record = await SellRecord.create({
         apartmentPhotoUrl: `/uploads/${req.file.filename}`,
         sellApartmentSize,
+        bedroomsNo,
+        squareFootage,
         price, 
         description, 
         phone, 
@@ -52,7 +56,7 @@ console.log({   apartmentPhotoUrl: `/uploads/${req.file.filename}`,
 // Retrieve all records
 export const allRecords_get = async (req, res) => {
   try {
-      const apartments = await SellRecord.find(); // Fetch all sell records
+      const apartments = await SellRecord.find({}).sort({ createdAt: -1}); // Fetch all sell records
       res.render('sellandbuy', { apartments, currentRoute: req.path }); // Render the view with apartments
   } catch (error) {
       console.error("Error fetching apartments:", error);

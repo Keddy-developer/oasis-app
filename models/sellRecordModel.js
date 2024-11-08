@@ -4,12 +4,20 @@ import pkg from 'validator';
 const { isEmail } = pkg;
 
 const sellRecordSchema = new mongoose.Schema({
-  apartmentPhotoUrl: { // Add this field if it doesn't exist
+  apartmentPhotoUrl: {
     type: String,
-    default: null, // Optional: default to null if no photo uploaded
+    default: null,
   },
   sellApartmentSize: {
     type: String,
+    required: true,
+  },
+  bedroomsNo: {
+    type: Number,
+    required: true,
+  },
+  squareFootage: {
+    type: Number,
     required: true,
   },
   price: {
@@ -24,15 +32,11 @@ const sellRecordSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  date: {
-    type: Date,
-    default: Date.now,
-  },
   userName: {
     type: String,
     required: true,
-  },
-});
+  }
+}, { timestamps: true }); // Automatically adds createdAt and updatedAt fields
 
 const SellRecord = mongoose.model('newSellRecord', sellRecordSchema);
 export default SellRecord;

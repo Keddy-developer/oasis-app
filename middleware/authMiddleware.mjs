@@ -49,6 +49,11 @@ export const checkUser = async (req, res, next) => {
                     let user = await User.findById(decodedToken.id);
                   
                     if (user) {
+                        req.session.user = {
+                            id: user._id,
+                            role: user.role // Ensure your User model has a 'role' field
+                          };
+                        console.log(req.session.user)
                         res.locals.user = user; // Set the user in locals for view rendering
                         res.locals.isLoggedIn = true; // User is logged in
                         console.log("User found:", user.userName);
@@ -81,6 +86,7 @@ export const checkUser = async (req, res, next) => {
                             console.log("No apartment record found for this user.");
                         }
                     } else {
+                       
                         res.locals.user = null;
                         req.user = null;
                         res.locals.isLoggedIn = false; // User is not logged in

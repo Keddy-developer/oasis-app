@@ -2,13 +2,13 @@
 <link href="/fonts/remixicon.css" rel="stylesheet">
 
 <section class="account-setting">
-    <div class="account-setting-header"></div>
-    <h1>Account Setting</h1>
     <form class="update-form-container" method="PATCH" action="/updatePassword" autocomplete="off">
         <h2>Edit & Update</h2>
         
         <label for="email">Email</label>
-        <input type="email" id="email" name="email" required autocomplete="email"/>
+        <div class="u-p-email">
+            <input type="email" id="email" name="email" required autocomplete="email"/>
+        </div>
         <div class="email-3 error"></div>
 
         <label for="current-password">Current Password</label>
@@ -32,7 +32,7 @@
         <div class="confirm-1 error"></div>
 
         <label for="confirm-password">Confirm Password</label>
-        <div class="password-container">
+        <div class="pass-container">
             <input type="password" id="confirmPassword" name="confirmPassword" required autocomplete="confirm-password"/>
             <button type="button" id="toggleConfirmPassword" class="toggle-password">
                 <i class="ri-eye-off-line"></i> 
@@ -42,7 +42,7 @@
         
         
         
-        <div class="update-buttons">
+        <div class="u-buttons">
             <button type="submit" class="save-button">Save</button>
             <div class="cancel-button" ><a href="/dashboard">Cancel</a></div>
         </div>

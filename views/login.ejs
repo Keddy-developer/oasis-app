@@ -14,7 +14,10 @@
         </button>
     </div>
     <div class="password error"></div>
-    <p><a href="/forgotPassword">Forgot password?</a></p>
+    <div style="display: flex;">
+        <p><a href="/forgotPassword">Forgot password?</a></p>
+        <p style="color: white;">Do not have account?<a href="/signup">Sign up</a></p>
+    </div>
     <div class="credential-btns">
         <button type="submit" class="submit-btn">Log in</button>
         <a href="/"><h5>Cancel</h5></a>
@@ -71,7 +74,7 @@
            passwordError.textContent = data.errors.password;
         }
         if (data.user){
-            location.assign('/');
+            location.assign('/dashboard');
         }
 
      } catch (err){

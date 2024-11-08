@@ -27,13 +27,37 @@
     </div>
     
     <form class="process-payment" id="paymentForm">
+      <label for="year">Year:</label>
+  <div id="year">
+  <select id="year" onchange="fetchServiceCharges(this.value)">
+    <option value="2023">2023</option>
+    <option value="2024">2024</option>
+    <option value="2025">2025</option>
+    <option value="2026">2026</option>
+    <option value="2027">2027</option>
+    <option value="2028">2028</option>
+    <option value="2029">2029</option>
+    <option value="2030">2030</option>
+    <option value="2031">2031</option>
+    <option value="2032">2032</option>
+    <option value="2033">2033</option>
+    <option value="2034">2034</option>
+    <option value="2035">2035</option>
+    <option value="2036">2036</option>
+    <option value="2037">2037</option>
+    <option value="2038">2038</option>
+    <option value="2039">2039</option>
+    <!-- Add more years as needed -->
+</select>
+
+</div>
       <div>
         <label for="phone">Mpesa No.</label>
-        <input type="tel" id="phone" name="phone" required pattern="[0-9]{10}">
+        <input type="tel" id="phone" name="phone" required >
       </div>
       <div>
         <label for="amount">Enter Amount</label>
-        <input type="number" id="amount" name="amount" required min="1" step="0.01">
+        <input type="number" id="amount" name="amount" required min="1" step="1">
       </div>
       <div class="payment-btns">
         <button class="btns-payment pay-btn" type="submit">Pay</button>
@@ -53,25 +77,46 @@
     // Capture values inside the event listener
     const phone = paymentForm.phone.value;
     const amount = paymentForm.amount.value;
+    const year = paymentForm.year.value;
+
+    // Log the values to check
+    console.log('Phone:', phone);
+    console.log('Amount:', amount);
+    console.log('Year :', year);
 
     // Convert to international format if needed
-    const formattedPhone = phone.startsWith('07') ? '254' + phone.slice(1) : phone;
+    const formattedPhone = 
+        phone.startsWith('07') || phone.startsWith('01') || phone.startsWith('+254') 
+        ? '254' + phone.replace(/^(0|\+254)/, '') 
+        : phone;
+    const formattedAmount = Math.round(amount);
 
-    const formData = { phone: formattedPhone, amount };
+    const formData = { phone: formattedPhone, amount, year };
     const data = new URLSearchParams(formData);
 
     try {
-      const response = await fetch('/makepayment', {
-        method: 'POST',
-        body: data,
-      });
-      const result = await response.json();
+        const response = await fetch('/api/stkpush', {
+            method: 'POST',
+            body: data,
+        });
 
-      // Display the appropriate message based on the response
-      paymentResponse.textContent = result.message; 
+        // Log the response status
+        console.log('Response Status:', response.status);
+
+        // Check if the response is OK
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const result = await response.json();
+
+        // Display the appropriate message based on the response
+        paymentResponse.textContent = result.message;
+        
+
     } catch (error) {
-      paymentResponse.textContent = "❌ An error occurred while processing your payment.";
-      console.error("Error:", error);
+        paymentResponse.textContent = "❌ An error occurred while processing your payment.";
+        console.error("Error:", error);
     }
 });
 </script>

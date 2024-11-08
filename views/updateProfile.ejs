@@ -1,92 +1,104 @@
 <%- include('partials/headerhome'); -%>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css">
+<div style="display: flex; align-items: center; justify-content: center;">
+    <section class="profile-section-future">
+        <div class="profile-header-future">
+            <h1>Update Apartment Info</h1>
+        </div>
+        <div class="profile-container-future">
+            <form style="display: flex; align-items: center; ">
+                <!-- Image Upload and Preview -->
+                 <div>
+                    <label style="color: aquamarine;" for="photoUrl">Upload Profile Image</label>
+                    <input type="file" id="photoUrl" name="photoUrl" accept="image/*" />
+                 </div>
+                <div style="margin-top: 10px;">
+                    <img id="imagePreview" src="<%= user ? user.photoUrl : '' %>" alt="Profile Preview" style="width: 100px; height: 100px; border-radius: 50%; display: none;" />
+                </div>
+            </form>
+              
+            <form class="profile-form-container-future" id="updateForm" enctype="multipart/form-data" method="POST" action="/update/profile/:id">
+                <label for="userName">User Name</label>
+                <input type="text" id="userName" value="<%= user ? user.userName : '' %>" name="userName" required/>
+                <div style="color: red;" class="username error-update"></div>
 
-<section class="profile-section">
-    <div class="profile-header">
-        <h1>Update Profile</h1>
-    </div>
-    <div class="profile-container">
-        <form class="profile-form-container" id="updateForm">
-            <label for="userName">Name</label>
-            <input type="text" id="userName" value="<%= record ? record.userName : '' %>" name="userName" required/>
-            
-            <label for="apartmentNo">Apartment No.</label>
-            <input type="text" id="apartmentNo" value="<%= record ? record.apartmentNo : '' %>" name="apartmentNo" required/>
+                <label for="apartmentNo">Apartment No.</label>
+                <input type="text" id="apartmentNo" value="<%= user ? user.apartmentNo : '' %>" name="apartmentNo" required/>
+                <div style="color: red;" class="apartmentNo error-update"></div>
 
-            <fieldset>
-                <legend>Apartment Size</legend>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="apartmentSize" value="Half" <%= record.apartmentSize === 'Half' ? 'checked' : '' %> required/> Half Size
-                    </label><br>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="update-save-future">
+                        <input type="submit" value="Update"/>
+                    </div>
+                    <a href="/dashboard">
+                        <div style="color: white; font-size: 1.3rem; cursor: pointer;">Cancel</div>
+                    </a>
                 </div>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="apartmentSize" value="Single" <%= record.apartmentSize === 'Single' ? 'checked' : '' %> /> Single
-                    </label><br>
-                </div>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="apartmentSize" value="Double" <%= record.apartmentSize === 'Double' ? 'checked' : '' %> /> Double
-                    </label><br>
-                </div>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="apartmentSize" value="1.5" <%= record.apartmentSize === '1.5' ? 'checked' : '' %> /> 1.5 Apartment
-                    </label><br>
-                </div>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="apartmentSize" value="Shops" <%= record.apartmentSize === 'Shops' ? 'checked' : '' %> /> Shops
-                    </label><br>
-                </div>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="apartmentSize" value="Duplex" <%= record.apartmentSize === 'Duplex' ? 'checked' : '' %> /> Duplex
-                    </label>
-                </div>
-            </fieldset>
+            </form>
+        </div>
+    </section>
+</div>
 
-            <div class="update-save">
-                <input type="submit" value="Update"/>
-            </div>
-        </form>
-    </div>
-</section>
-
+<!-- Script at the end of the body for improved loading -->
 <script>
-    const form = document.getElementById('updateForm');
-    
-    form.addEventListener('submit', async (event) => {
-        event.preventDefault();
+    document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById('updateForm');
+        const userNameError = document.querySelector('.username.error-update');
+        const apartmentNoError = document.querySelector('.apartmentNo.error-update');
+        const photoUrlInput = document.getElementById('photoUrl');
+        const imagePreview = document.getElementById('imagePreview');
         
-        const userName = form.userName.value.trim();
-        const apartmentNo = form.apartmentNo.value.trim();
-        const apartmentSize = form.apartmentSize.value; // Radio button values should be captured correctly
-
-        const recordId = "<%= record ? record.id : '' %>";
-
-        console.log("Submitting update with:", { userName, apartmentNo, apartmentSize }); // Debugging log
-
-        try {
-            const res = await fetch(`/records/${recordId}`, {
-                method: 'PATCH',
-                body: JSON.stringify({ userName, apartmentNo, apartmentSize }),
-                headers: { 'Content-Type': 'application/json' }
-            });
-
-            const data = await res.json();
-            if (res.ok) {
-                alert('Record updated successfully.');
-                setTimeout(() => {
-                    location.assign('/dashboard'); // Redirect to dashboard after a brief delay
-                }, 1000); // 1 second delay before redirect
+        // Image preview functionality
+        photoUrlInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    imagePreview.src = reader.result;
+                    imagePreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
             } else {
-                alert(data.error || 'An unknown error occurred.'); // Handle errors more gracefully
+                imagePreview.style.display = 'none';
             }
-        } catch (error) {
-            console.error("Fetch error:", error);
-            alert('There was an error updating the record. Please try again.'); // User-friendly error message
-        }
+        });
+        
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const profilePhoto = photoUrlInput.files[0];
+            const userName = form.userName.value.trim();
+            const apartmentNo = form.apartmentNo.value.trim();
+            const formData = new FormData();
+            formData.append('photoUrl', profilePhoto);
+            formData.append('userName', userName);
+            formData.append('apartmentNo', apartmentNo);
+
+            // Clear previous errors
+            userNameError.textContent = '';
+            apartmentNoError.textContent = '';
+
+            const recordId = "<%= user ? user._id : '' %>";
+
+            try {
+                const res = await fetch(`/update/profile/${recordId}`, {
+                    method: 'PATCH',
+                    body: formData
+                });
+
+                const data = await res.json();
+                if (res.ok) {
+                    alert('User updated successfully.');
+                    setTimeout(() => {
+                        location.href = '/dashboard';
+                    }, 1000);
+                } else if (data.errors) {
+                    userNameError.textContent = data.errors.userName || '';
+                    apartmentNoError.textContent = data.errors.apartmentNo || '';
+                }
+            } catch (error) {
+                console.error("Fetch error:", error);
+                alert('There was an error updating the record. Please try again.');
+            }
+        });
     });
 </script>

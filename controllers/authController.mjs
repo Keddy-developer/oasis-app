@@ -5,10 +5,14 @@ import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import dotenv from 'dotenv';
 import sendEmail from '../utils/email.js'
+import Record from '../models/recordModel.js';
 
 dotenv.config();
 
-// Define CustomError class
+const adminEmails = ['gideonoro01@gmail.com'];
+const maxAge = 3 * 24 * 60 * 60;
+
+// Custom error handling
 class CustomError extends Error {
   constructor(message, statusCode) {
     super(message);
@@ -17,42 +21,72 @@ class CustomError extends Error {
   }
 }
 
-//handle errors
-const handleErrors = (err)=>{
-  console.log(err.message, err.code)
-  let errors = { email: '', password: ''}
+// Handle errors function
+const handleErrors = (err) => {
+  console.log(err.message, err.code);
+  let errors = { email: '', password: '', userName: '', apartmentNo: '' };
 
-  // incorrect email
-  if (err.message === 'Incorrect email'){
-    errors.email = 'That email is not registered'
-    errors.userName = 'That user name is not registered'
+  // Incorrect credentials
+  if (err.message === 'Incorrect email') {
+    errors.email = 'That email is not registered';
+  }
+  if (err.message === 'Incorrect password') {
+    errors.password = 'That password is incorrect';
   }
 
-  // incorrect password
-  if (err.message === 'Incorrect password'){
-    errors.password = 'That password is incorrect'
+  // Duplicate error code
+  if (err.code === 11000) {
+    if (err.keyValue.email) errors.email = 'That email is already registered';
+    if (err.keyValue.userName) errors.userName = 'That username is already registered';
+    if (err.keyValue.apartmentNo) errors.apartmentNo = 'That apartment number is already registered';
   }
-// duplicate error code
-if(err.code === 11000){
-    errors.email = 'That email is already registered';
-    errors.userName = 'That user name is already registered';
-    return errors;
-}
-  //validation errors
-  if(err.message.includes('user validation failed')){
-    Object.values(err.errors).forEach(properties =>{
-        errors[properties.path] = properties.message
-    })
+
+  // Validation errors
+  if (err.message.includes('user validation failed')) {
+    Object.values(err.errors).forEach((properties) => {
+      errors[properties.path] = properties.message;
+    });
   }
   return errors;
-}
+};
 
-const maxAge = 3 *24 * 60 * 60;
-const createToken = (id) =>{
-  return jwt.sign({id}, process.env.SECRET_STR, {
-    expiresIn: maxAge
-  })
-}
+// Token creation
+const createToken = (id) => jwt.sign({ id }, process.env.SECRET_STR, { expiresIn: maxAge });
+
+// Route handler for signup
+export const signup_post = async (req, res) => {
+  const { userName, apartmentNo, email, password } = req.body;
+
+  // Determine role based on email
+  const role = adminEmails.includes(email) ? 'admin' : 'apartmentOwner';
+
+  try {
+    // Check for duplicate fields
+    const existingUserName = await User.findOne({ userName });
+    const existingApartmentNo = await User.findOne({ apartmentNo });
+    const existingEmail = await User.findOne({ email });
+
+    if (existingUserName) return res.status(400).json({ errors: { userName: 'That username is already registered' } });
+    if (existingApartmentNo) return res.status(400).json({ errors: { apartmentNo: 'That apartment number is already registered' } });
+    if (existingEmail) return res.status(400).json({ errors: { email: 'That email is already registered' } });
+   
+    // Create new user
+    const apartmentNoExist = await Record.findOne({apartmentNo})
+    if (apartmentNoExist || role === 'admin') {
+      const user = await User.create({ userName, apartmentNo, email, password, role });
+      const token = createToken(user._id);
+  
+      res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
+      res.status(201).json({ user: user._id });
+    } else {
+      res.status(400).json({ errors: { apartmentNo: 'That apartment number is not registered in Oasis' } })
+    }
+   
+  } catch (err) {
+    const errors = handleErrors(err);
+    res.status(400).json({ errors });
+  }
+};
 
 
 export const signup_get = (req, res)=>{
@@ -63,35 +97,29 @@ export const login_get = (req, res)=>{
     res.render('login')
 }
 
-export const signup_post = async (req, res)=>{
-    const {userName, email, password} = req.body;
+export const login_post = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.login(email, password);
+    const token = createToken(user._id);
+
+    // Set cookie with the JWT
+    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
+     
     
-    try{
-       const user = await User.create({userName, email, password});
-        const token = createToken(user._id)
-        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000})
-       res.status(201).json({user: user._id})
-       
-    }
-    catch (err){
-     const errors = handleErrors(err)
-     res.status(400).json({errors})
-    }
-}
+    // Set session user
+    req.session.user = {
+      id: user._id,
+      role: user.role 
+    };
 
-export const login_post = async (req, res)=>{
-    const { email, password} = req.body;
-
-    try {
-       const user = await User.login(email, password)
-       const token = createToken(user._id)
-       res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000})
-       res.status(200).json({user: user._id})
-    } catch (err){
-      const errors = handleErrors(err)
-      res.status(400).json({errors})
-    }
-}
+    res.status(200).json({ user: user._id });
+  } catch (err) {
+    const errors = handleErrors(err);
+    res.status(400).json({ errors });
+  }
+};
 
 export const logout_get = async (req, res)=>{
   res.cookie('jwt', '', {maxAge: 1})
@@ -132,6 +160,62 @@ export const update_post = async (req, res, next) => {
     res.status(400).json({ errors });
   }
 };
+// Get record details to render the update form
+export const getUpdateProfile = async (req, res) => {
+  const id = req.user._id;
+  try {
+    const record = await User.findById(id);
+    if (!record) {
+      res.status(404).json(alert('Please create a profile.'));
+      res.redirect('/profile')
+    }
+
+    res.render('updateProfile', { record, currentRoute: req.path });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+// Update a profile
+export const updateProfile_patch = async (req, res) => { 
+  const { id } = req.params;
+  const { userName, apartmentNo } = req.body;
+console.log(req.file)
+  try {
+      // Check for existing username or apartment number
+      const existingUserName = await User.findOne({ userName });
+      const existingApartmentNo = await User.findOne({ apartmentNo });
+
+      if (existingUserName) {
+          return res.status(400).json({ errors: { userName: 'That username is already registered' } });
+      }
+      if (existingApartmentNo) {
+          return res.status(400).json({ errors: { apartmentNo: 'That apartment number is already registered' } });
+      }
+
+      // Prepare the update object
+      const updateData = {
+          userName,
+          apartmentNo,
+      };
+  console.log(req.file.filename)
+      // Check if a file has been uploaded
+      if (req.file) {
+          updateData.photoUrl = `/uploads/${req.file.filename}`; // Add the photo URL if a file was uploaded
+      }
+
+      // Update user if no errors found
+      const record = await User.findByIdAndUpdate(id, updateData, { new: true });
+      if (record) {
+          res.status(200).json(record);
+      } else {
+          res.status(404).json({ errors: { general: 'Failed to save. Try again.' } });
+      }
+  } catch (err) {
+      res.status(500).json({ errors: { general: err.message } });
+  }
+};
+
+
 export const delete_post = async (req, res)=>{
   const {email, password} = req.body;
 

@@ -1,30 +1,48 @@
-<%- include('partials/headerhome'); -%>
+<%- include('partials/headerhome'); -%> 
 
 <section class="sellnbuy-section">
   <div class="sellandbuy-title">
       <h4>Sell and Buy</h4>
   </div>
   
-      <% if (apartments.length === 0) { %>
-        <div>
-          <h4>No listed apartments yet.</h4>
-        </div>
-      
-        <% } else { %>
-          <% apartments.forEach(apartment => { %>
-          <div class="apartment-card-container">
-            <article class="apartment-card">
-              <img class="apartment-card-image" src="<%= apartment.apartmentPhotoUrl %>" alt="<%= apartment.description || 'Apartment Image' %>" />
-              <header>
-                <h5><%= apartment.sellApartmentSize %> for sale</h5>
-              </header>
-              <p>Price: Ksh <%= new Intl.NumberFormat().format(apartment.price) %></p>
-              <p>Description: <%= apartment.description %></p>
-              <div>
-                <p>Phone Number: <a href="tel:<%= apartment.phone %>"><%= apartment.phone %></a></p>
+  <% if (apartments.length === 0) { %>
+    <div class="no-listed-apt">
+      <div class="no-listed-apt-info">
+        <h4>No listed apartments yet.</h4>
+      </div>
+    </div>
+  <% } else { %>
+    <div class="apartment-card-container">
+      <% apartments.forEach(apartment => { %>
+        <article class="apartment-card">
+          <img class="apartment-card-image" src="<%= apartment.apartmentPhotoUrl %>" alt="<%= apartment.description || 'Apartment Image' %>" />
+          <div class="apartment-card-container-info">
+            <div>
+              <h5><%= apartment.sellApartmentSize %> for sale</h5>
+            </div>
+            <div class="apt-info-container">
+              <p><strong>Price:</strong> Ksh <%= new Intl.NumberFormat().format(apartment.price) %></p>
+              <div class="apt-info">
+                <div>
+                  <p><%= apartment.bedroomsNo %></p>
+                  <i class="ri-hotel-bed-line" style="font-size: 1.5rem;"></i>
+                </div>
+                <div>
+                  <p><%= apartment.squareFootage %></p>
+                  <i class="ri-ruler-line" style="font-size: 1.5rem;"></i>
+                </div>
               </div>
-            </article>
-          <% }); %>
-        <% } %>
-  </div>
+            </div>
+            <div class="sell-description">
+              <p class="description-header"><strong>Description:</strong> </p>
+              <p class="white"><%= apartment.description %></p>
+            </div>
+            <div>
+              <p class="des-info"><strong>Phone Number:</strong> <a href="tel:<%= apartment.phone %>"><%= apartment.phone %></a></p>
+            </div>
+          </div>
+        </article>
+      <% }); %>
+    </div>
+  <% } %>
 </section>

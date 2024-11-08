@@ -18,19 +18,25 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+
+// Middleware to check if the user is an admin
+function isAdmin(req, res, next) {
+    console.log(req.session.use)
+    if (req.session.user && req.session.user.role === 'admin') {
+        
+      next();
+    } else {
+      res.status(403).send('Access denied');
+    }
+  }
+
 // User-related routes
 
 router.post('/records', requireAuth, checkUser, recordController.newRecord_post);
-router.post('/signup', requireAuth, checkUser, recordController.newRecord_post);
 
 // Get all records (or consider renaming this route for clarity)
-router.get('/records', requireAuth, checkUser, recordController.allRecords_get);
+router.get('/dashboard', requireAuth, checkUser, recordController.allRecords_get);
 
-// Route to render the update record form
-router.get('/records/:id/edit', requireAuth, checkUser, recordController.getUpdateRecord, );
-
-// Route to handle record update
-router.patch('/records/:id', requireAuth, checkUser, recordController.updateRecord_patch);
 
 // Delete a record
 router.delete('/records/:id', requireAuth, checkUser, recordController.deleteRecord_delete);
@@ -44,5 +50,16 @@ router.get('/dashboard', requireAuth, checkUser, recordController.dashboard_get)
 
 // Profile route (consider changing the path for clarity)
 router.get('/profile', requireAuth, checkUser, recordController.profile_get);
+
+// POST Add Apartment
+router.post('/admin/add-apartment', requireAuth, checkUser, isAdmin, recordController.addApartment_post);
+
+router.get('/admin/get-apartment/:id',isAdmin, requireAuth, checkUser, recordController.getApartments_get);
+  
+  // PUT Edit Apartment
+  router.put('/admin/edit-apartment/:id', isAdmin, requireAuth, checkUser, recordController.editApartment_put );
+  
+  // DELETE Remove Apartment
+  router.delete('/admin/remove-apartment/:id', isAdmin, requireAuth, checkUser, recordController.removeApartment_delete);
 
 export default router;

@@ -1,33 +1,44 @@
 <%- include('partials/headerhome'); -%>
 
 <section class="sell-section">
-  <div class="form-container">
+  <div class="listing-form-container">
     <h2 class="form-title">List Your Apartment</h2>
     <form id="apartmentForm" enctype="multipart/form-data">
-        <div class="form-group">
-          <div class="apartment-photo-container">
-            <img id="apartmentPhotoPreview" class="apartment-photo" src="<%= user && user.apartmentPhotoUrl ? user.apartmentPhotoUrl : '/apartment-icon.jfif' %>" alt="Apartment Preview">
-          </div>
-            <label for="apartmentPhotoUrl">Apartment Photo</label>
-            <input type="file" id="apartmentPhotoUrl" name="apartmentPhotoUrl" accept="image/*" required />
+      <div class="form-group">
+        <div class="apartment-photo-container">
+          <img id="apartmentPhotoPreview" class="apartment-photo" src="<%= user && user.apartmentPhotoUrl ? user.apartmentPhotoUrl : '/apartment-icon.jfif' %>" alt="Apartment Preview">
         </div>
-        <div class="form-group">
-            <label for="sellApartmentSize">Apartment Size</label>
-            <input type="text" id="sellApartmentSize" name="sellApartmentSize" maxlength="40" required />
-        </div>
-        <div class="form-group">
-            <label for="price">Price</label>
-            <input type="number" id="price" name="price" required />
-        </div>
-        <div class="form-group">
-            <label for="description">Description</label>
-            <textarea id="description" name="description" rows="4" maxlength="70"required></textarea>
-        </div>
-        <div class="form-group">
-            <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" name="phone" required />
-        </div>
-        <button type="submit" class="submit-button">Submit Listing</button>
+        <label for="apartmentPhotoUrl">Apartment Photo</label>
+        <input type="file" id="apartmentPhotoUrl" name="apartmentPhotoUrl" accept="image/*" required />
+      </div>
+      <div class="form-group">
+        <label for="sellApartmentSize">Apartment Size</label>
+        <input type="text" id="sellApartmentSize" name="sellApartmentSize" maxlength="40" required />
+      </div>
+      <div class="form-group">
+        <label for="bedroomsNo">Number of Bedrooms</label>
+        <input type="number" id="bedroomsNo" name="bedroomsNo" required />
+      </div>
+      <div class="form-group">
+        <label for="squareFootage">Square Footage (if available)</label>
+        <input type="number" id="squareFootage" name="squareFootage" required />
+      </div>
+      <div class="form-group">
+        <label for="price">Price</label>
+        <input type="number" id="price" name="price" required />
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" name="description" rows="4" maxlength="70" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" required />
+      </div>
+      <button type="submit" class="submit-button">
+        <span class="button-text">Submit Listing</span>
+        <i class="ri-loader-4-line spinner-icon"></i>
+      </button>
     </form>
   </div>
 </section>
@@ -39,28 +50,33 @@
 
   // Event listener for file input change
   apartmentPhotoInput.addEventListener('change', (event) => {
-    const file = event.target.files[0]; // Get the selected file
+    const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader(); // Create a FileReader to read the file
+      const reader = new FileReader();
       reader.onload = (e) => {
-        apartmentPhotoPreview.src = e.target.result; // Set the src of the image to the file data
+        apartmentPhotoPreview.src = e.target.result;
       };
-      reader.readAsDataURL(file); // Read the file as a Data URL
+      reader.readAsDataURL(file);
     }
   });
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault(); // Prevent default form submission
+    showLoadingSpinner(); // Show the loading spinner
 
     const apartmentPhoto = apartmentPhotoInput.files[0];
     const sellApartmentSize = form.sellApartmentSize.value.trim();
+    const bedroomsNo = form.bedroomsNo.value.trim();
+    const squareFootage = form.squareFootage.value.trim();
     const price = form.price.value.trim();
     const description = form.description.value.trim();
     const phone = form.phone.value.trim();
 
-    const formData = new FormData(); // Using FormData for file upload
+    const formData = new FormData();
     formData.append('apartmentPhotoUrl', apartmentPhoto);
     formData.append('sellApartmentSize', sellApartmentSize);
+    formData.append('bedroomsNo', bedroomsNo);
+    formData.append('squareFootage', squareFootage);
     formData.append('price', price);
     formData.append('description', description);
     formData.append('phone', phone);
@@ -68,7 +84,7 @@
     try {
       const res = await fetch('/list', {
         method: 'POST',
-        body: formData // Sending the form data with the file
+        body: formData
       });
 
       const data = await res.json();
@@ -77,11 +93,29 @@
       if (data.error) {
         alert(data.error);
       } else {
-        alert('Apartment successfully listed');
         location.assign('/listings');
       }
     } catch (error) {
       console.error(error);
+      alert('An error occurred while listing the apartment.');
+    } finally {
+      hideLoadingSpinner(); // Hide the spinner after the request completes
     }
   });
+
+  function showLoadingSpinner() {
+    const button = document.querySelector('.submit-button');
+    button.classList.add('loading');
+    button.disabled = true; // Disable button to prevent multiple submissions
+    button.querySelector('.spinner-icon').style.display = 'inline-block'; // Show spinner
+    button.querySelector('.button-text').style.display = 'none'; // Hide text
+  }
+
+  function hideLoadingSpinner() {
+    const button = document.querySelector('.submit-button');
+    button.classList.remove('loading');
+    button.disabled = false; // Enable button again
+    button.querySelector('.spinner-icon').style.display = 'none'; // Hide spinner
+    button.querySelector('.button-text').style.display = 'inline'; // Show text
+  }
 </script>

@@ -11,6 +11,11 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Please enter a user name'],
         unique: true,
     },
+    apartmentNo: {
+        type: String,
+        required: [true, 'Please enter an apartment number'],
+        unique: true,
+    },
     photoUrl: {
         type: String,
         default: null, 
@@ -26,6 +31,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please enter a password'],
         minlength: [6, 'Minimum password length is 6 characters']
+    },
+    role: {
+        type: String,
     },
     passwordChangedAt: Date,
     passwordResetToken: String,

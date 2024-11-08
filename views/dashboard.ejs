@@ -1,72 +1,501 @@
-<%- include('partials/headerhome'); -%>
+<div class="page-setter">
+<% if (user.role === 'admin') { %>
+    <%- include('partials/header'); -%>
+    <div class="page-content">
+    <link href="/fonts/remixicon.css" rel="stylesheet">
+  
+    <section class="admin-dashboard">
+      <div class="dashboard-header">
+        <h2>Admin Dashboard</h2>
+        <p>Manage apartments and payments</p>
+      </div>
+  
+      <!-- Summary Section -->
+      <div class="summary-section">
+        <div class="summary-card">
+          <h3>Total Amount Collected</h3>
+          <p class="amount-collected">Ksh <%= totalAmountCollected %></p>
+        </div>
+        <div class="summary-card">
+          <h3>Total Amount Owed</h3>
+          <p class="amount-owed">Ksh <%= totalAmountOwed %></p>
+        </div>
+      </div>
+  
+      <!-- Apartments Management Section -->
+      <div class="apartment-management">
+        <div class="apartment-management-header">
+            <h3>Manage Apartments</h3>
+            <button class="add-apartment-btn" onclick="showAddApartmentForm()">Add Apartment</button>
+        </div>
+        
+  <!-- Add Apartment Form (Hidden by Default) -->
+  <div class="add-apartment-form" id="addApartmentForm" style="display: none;">
+    <h4>Add New Apartment</h4>
+    <form id="addApartment" onsubmit="submitApartmentForm(event)">
+      <label for="apartmentNo">Apartment No:</label>
+      <input type="text" id="apartmentNo" name="apartmentNo" required />
 
-<section class="dashboard">
-    <hr class="headinghr">
-    <div class="dashboard-header">
-        <h1>Dashboard</h1>
+      <label for="ownerName">Owner Name:</label>
+      <input type="text" id="apartmentOwner" name="apartmentOwner" required />
+      <fieldset class="add-fieldset">
+        <legend>Apartment Size</legend>
+        <div class="radio">
+            <label>
+                <input type="radio" name="apartmentSize" value="Half" required/> Half Size
+            </label><br>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" name="apartmentSize" value="Single"/> Single
+            </label><br>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" name="apartmentSize" value="Double"/> Double
+            </label><br>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" name="apartmentSize" value="1.5"/> 1.5 Apartment
+            </label><br>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" name="apartmentSize" value="Shops"/> Shops
+            </label><br>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" name="apartmentSize" value="Duplex"/> Duplex
+            </label>
+        </div>
+    </fieldset>
+
+
+      <div class="add-apartment-btns">
+        <button class="add-apartment-btn" type="submit">Add Apartment</button>
+        <button type="button" class="add-apartment-cancel-btn" onclick="hideAddApartmentForm()">Cancel</button>
+      </div>
+      
+    </form>
+  </div>
+
+  <!-- Edit Apartment Form (Hidden by Default) -->
+<div class="edit-apartment-form" id="editApartmentForm" style="display: none;">
+  <h4>Edit Apartment</h4>
+  <form id="editApartment" onsubmit="submitEditApartmentForm(event)">
+    <input type="hidden" id="editApartmentId" name="apartmentId" />
+
+    <label for="editApartmentNo">Apartment No:</label>
+    <input type="text" id="editApartmentNo" name="apartmentNo" required />
+
+    <label for="editOwnerName">Owner Name:</label>
+    <input type="text" id="editOwnerName" name="apartmentOwner" required />
+    <fieldset>
+      <legend>Apartment Size</legend>
+      <div class="radio">
+          <label>
+              <input type="radio" id="editApartmentSize" name="apartmentSize" value="Half" required/> Half Size
+          </label><br>
+      </div>
+      <div class="radio">
+          <label>
+              <input type="radio" id="editApartmentSize" name="apartmentSize" value="Single"/> Single
+          </label><br>
+      </div>
+      <div class="radio">
+          <label>
+              <input type="radio" id="editApartmentSize" name="apartmentSize" value="Double"/> Double
+          </label><br>
+      </div>
+      <div class="radio">
+          <label>
+              <input type="radio" id="editApartmentSize" name="apartmentSize" value="1.5"/> 1.5 Apartment
+          </label><br>
+      </div>
+      <div class="radio">
+          <label>
+              <input type="radio" id="editApartmentSize" name="apartmentSize" value="Shops"/> Shops
+          </label><br>
+      </div>
+      <div class="radio">
+          <label>
+              <input type="radio" id="editApartmentSize" name="apartmentSize" value="Duplex"/> Duplex
+          </label>
+      </div>
+  </fieldset>
+  
+  <label for="year">Year:</label>
+  <div id="yearSelectorContainer">
+  <select id="yearSelector" onchange="fetchServiceCharges(this.value)">
+    <option value="2023">2023</option>
+    <option value="2024">2024</option>
+    <option value="2025">2025</option>
+    <option value="2026">2026</option>
+    <option value="2027">2027</option>
+    <option value="2028">2028</option>
+    <option value="2029">2029</option>
+    <option value="2030">2030</option>
+    <option value="2031">2031</option>
+    <option value="2032">2032</option>
+    <option value="2033">2033</option>
+    <option value="2034">2034</option>
+    <option value="2035">2035</option>
+    <option value="2036">2036</option>
+    <option value="2037">2037</option>
+    <option value="2038">2038</option>
+    <option value="2039">2039</option>
+    <!-- Add more years as needed -->
+</select>
+</div>
+
+
+    <label for="editAmountCollected">Amount Collected:</label>
+    <input type="number" id="editAmountCollected" name="amountCollected" />
+
+    <div class="edit-apartment-btns">
+      <button class="save-edit-btn" type="submit">Save Changes</button>
+      <button type="button" class="cancel-edit-btn" onclick="hideEditApartmentForm()">Cancel</button>
     </div>
-    <div class="apartment-info-container">
-        <div class="apartment-info">
-            <div class="apartment-info-icon"><i class="ri-home-line"></i></div>
-            <p class="apartment-info-description"><%= user ? user.apartmentSize : 'N/A' %></p>
-            <p>Apartment Size</p>
-        </div>
+  </form>
+</div>
+<form class="filter-form" action="/dashboard" method="GET">
+  <label class="filter-form__label" for="year">Select Year:</label>
+  <select class="filter-form__select" id="year" name="year">
+    <option value="2023">2023</option>
+    <option value="2024">2024</option>
+    <option value="2025">2025</option>
+    <option value="2026">2026</option>
+    <option value="2027">2027</option>
+    <option value="2028">2028</option>
+    <option value="2029">2029</option>
+    <option value="2030">2030</option>
+    <option value="2031">2031</option>
+    <option value="2032">2032</option>
+    <option value="2033">2033</option>
+    <option value="2034">2034</option>
+    <option value="2035">2035</option>
+    <option value="2036">2036</option>
+    <option value="2037">2037</option>
+    <option value="2038">2038</option>
+    <option value="2039">2039</option>
+  </select>
+  
+  <label class="filter-form__label" for="apartmentNo">Apartment Number:</label>
+  <input class="filter-form__input" type="text" id="apartmentNo" name="apartmentNo" placeholder="Enter Apartment Number">
+  
+  <button class="filter-form__button" type="submit">Filter</button>
+ 
+</form>
+        <!-- Apartment Table -->
+        <table class="apartment-table">
+          <thead>
+            <tr>
+              <th>Apartment No</th>
+              <th>Owner</th>
+              <th>Year</th> 
+              <th>Amount Collected</th>
+              <th>Amount Owed</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% apartments.forEach(apartment => { %>
+              <tr>
+                  <td><%= apartment.apartmentNo %></td>
+                  <td><%= apartment.apartmentOwner %></td>
+                  
+                  <% const payment = apartment.paymentModel.find(p => p.year === Number(year)); %>
+                  <% if (payment) { %>
+                      <td><%= payment.year %>
+                      <td>Ksh <%= payment.amountCollected %></td>
+                      <td>Ksh <%= payment.amountOwed !== undefined ? payment.amountOwed : apartment.serviceCharge %></td>
+                  <% } else { %>
+                      <td> - </td>
+                      <td> - </td>
+                      <td> - </td>
+                  <% } %>
+                  
+                <td>
+                  <button onclick="editApartment('<%= apartment._id %>')">Edit</button>
+                  <button onclick="removeApartment('<%= apartment._id %>', '<%= year %>')">Remove</button>
+                </td>
+              </tr>
+          <% }) %>
+          </tbody>
+        </table>
+      </div>
+  
+      
+    </section>
+    <div id="overlay" style="display: none;" onclick="hideEditApartmentForm()"></div>
+  </div>
+  </div>
+    <script>
+      // Function to get the current year
+function getCurrentYear() {
+    const today = new Date();
+    return today.getFullYear();
+}
 
-        <div class="apartment-info">
-            <div class="apartment-info-icon"><i class="ri-money-dollar-circle-line"></i></div>
-            <p class="apartment-info-description">Ksh <%= user ? user.serviceCharge : 'N/A' %>/year</p>
-            <p>Service Charge</p>
-        </div>
+// Function to handle year selection
+function fetchServiceCharges(selectedYear) {
+    // Check if a year is selected, if not, set it to the current year
+    const yearToSend = selectedYear || getCurrentYear();
+    
+    // Proceed with your logic to fetch service charges with the selected or default year
+    console.log(`Year selected: ${yearToSend}`);
+    // Here you can call your API or any other function that needs the year
+}
 
-        <div class="apartment-info">
-            <div class="apartment-info-icon"><i class="ri-calendar-line"></i></div>
-            <p class="apartment-info-description">15th of every month</p>
-            <p>Due Date</p>
-        </div>
+// On page load, set the select to current year if no year is selected
+window.onload = function() {
+    const yearSelector = document.getElementById('yearSelector');
+    const currentYear = getCurrentYear();
+    
+    // Check if current year is already an option, if not add it
+    if (![...yearSelector.options].some(option => option.value == currentYear)) {
+        const newOption = document.createElement('option');
+        newOption.value = currentYear;
+        newOption.text = currentYear;
+        yearSelector.add(newOption);
+    }
+    
+    // Optionally, you can set the current year as the selected value
+    yearSelector.value = currentYear; // Uncomment if you want to set the current year on load
+};
+      function showAddApartmentForm() {
+        document.getElementById('addApartmentForm').style.display = 'block';
+      }
+  
+      function hideAddApartmentForm() {
+        document.getElementById('addApartmentForm').style.display = 'none';
+      }
+  
+      async function submitApartmentForm(event) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+  console.log(Object.fromEntries(formData))
+        try {
+          const response = await fetch('/admin/add-apartment', {
+            method: 'POST',
+            body: JSON.stringify(Object.fromEntries(formData)),
+            headers: { 'Content-Type': 'application/json' }
+          });
+  
+          const data = await response.json();
+          console.log(data)
+          if (response.ok) {
+            location.reload();
+          } else {
+            console.log(data)
+            alert(data.message || 'Failed to add apartment');
+            
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('An error occurred while adding the apartment.');
+        }
+      }
+  
+      async function removeApartment(id, year) {
+    if (confirm('Are you sure you want to delete this apartment payment record for the year ' + year + '?')) {
+        try {
+          const url = `/admin/remove-apartment/${id}?year=${year}`;
+            console.log("Fetching:", url); // Log the URL
+            const response = await fetch(url, {
+                method: 'DELETE',
+            });
 
-        <div class="apartment-info">
-            <div class="apartment-info-icon"><i class="ri-wallet-line"></i></div>
-            <p class="apartment-info-description">Ksh 30,000</p>
-            <p>Balance</p>
-        </div>
-    </div>
+            console.log(response);
+            if (response.ok) {
+                alert('Payment record for the year removed successfully');
+                location.reload();
+            } else {
+                alert('Failed to remove apartment payment record');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while removing the apartment payment record.');
+        }
+    }
+}
 
-    <div class="transaction-container">
-        <div class="transaction-container-header">
-            <p>Recent Transactions</p>
+      // Show the Edit Apartment form and populate fields
+  function editApartment(id) {
+    document.getElementById('editApartmentForm').style.display = 'block';
+    document.getElementById('overlay').style.display = 'block'; // Show overlay
+
+    // Fetch apartment details and populate the form
+    fetch(`/admin/get-apartment/${id}`)
+  .then(response => {
+  
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    // Parse the JSON from the response
+    return response.json(); // This returns a Promise
+  })
+  .then(data => {
+    document.getElementById('editApartmentId').value = data._id;
+        document.getElementById('editApartmentNo').value = data.apartmentNo;
+        document.getElementById('editOwnerName').value = data.apartmentOwner;
+       
+            // Access the first entry in paymentModel if it exists
+            if (data.paymentModel.length > 0) {
+                const latestPayment = data.paymentModel[data.paymentModel.length - 1]; // Get the latest payment entry
+               document.getElementById('editAmountCollected').value = latestPayment.amountCollected || 0;
+                console.log("Amount Collected:", latestPayment.amountCollected);
+            } else {
+                document.getElementById('editAmountCollected').value = 0; // Default if no entries in paymentModel
+            }
+     // Set the checked radio button based on apartment size
+     const apartmentSizeRadios = document.getElementsByName('apartmentSize');
+      apartmentSizeRadios.forEach(radio => {
+        if (radio.value === data.apartmentSize) {
+          radio.checked = true; // Set the matching radio button as checked
+        }
+      });
+  
+  })
+  .catch(error => {
+    // Handle any errors that occurred during the fetch or JSON parsing
+    console.error('Error:', error);
+  });
+    fetch(`/admin/get-apartment/${id}`)
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('editApartmentId').value = data._id;
+        document.getElementById('editApartmentNo').value = data.apartmentNo;
+        document.getElementById('editOwnerName').value = data.apartmentOwner;
+        document.getElementById('editAmountCollected').value = data.amountCollected;
+        console.log(data)
+      })
+      .catch(error => console.error('Error:', error));
+  }
+// Reset the form and hide overlay
+function resetEditApartmentForm() {
+    document.getElementById('editApartment').reset(); // Reset the form fields
+    document.getElementById('overlay').style.display = 'none'; // Hide the overlay
+}
+  // Hide the Edit Apartment form
+  function hideEditApartmentForm() {
+    document.getElementById('editApartmentForm').style.display = 'none';
+    document.getElementById('overlay').style.display = 'none'; // Hide overlay
+    resetEditApartmentForm();
+  }
+
+ 
+
+// Submit the edited apartment data
+async function submitEditApartmentForm(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const dataObject = Object.fromEntries(formData.entries()); // Convert FormData to an object
+    dataObject.yearSelector = document.getElementById('yearSelector').value; // Add yearSelector to the object
+
+    try {
+        const response = await fetch(`/admin/edit-apartment/${dataObject.apartmentId}`, {
+            method: 'PUT',
+            body: JSON.stringify(dataObject), // Stringify the updated object
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (response.ok) {
+            alert('Apartment updated successfully');
+            resetEditApartmentForm(); // Reset form and hide overlay
+            location.reload(); // Reload the page to see changes
+        } else {
+            alert('Failed to update apartment');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while updating the apartment.');
+    }
+}
+
+</script>
+  
+    <%- include('partials/footer'); -%>
+  
+  <% } else { %>
+    <%- include('partials/headerhome'); -%>
+  
+    <section class="user-dashboard">
+      <div class="user-dashboard-header">
+        <h1>Resident Dashboard</h1>
+      </div>
+      
+      <div class="user-apartment-info-container">
+        <div class="user-apartment-info">
+          <i class="ri-home-line"></i>
+          <p><%= userApartmentSize || 'N/A' %></p>
+          <span>Apartment Size</span>
         </div>
-        <hr class="headinghr">
-        <div>
-            <div class="transaction-lists">
-                <div class="transaction-list">
-                    <i class="ri-file-list-2-line"></i>
-                    <div>
-                        <p class="transaction-name">Gideon Rono</p>
-                        <p class="list-description">11/10/2024 . Via Paybill</p>
-                    </div>
-                </div>
-                <p>Ksh. 20,000</p>
+  
+        <div class="user-apartment-info">
+          <i class="ri-money-dollar-circle-line"></i>
+          <p>Ksh <%= userServiceCharge || 'N/A' %>/year</p>
+          <span>Service Charge</span>
+        </div>
+  
+        <div class="user-apartment-info">
+          <i class="ri-calendar-line"></i>
+          <p>15th of every month</p>
+          <span>Due Date</span>
+        </div>
+  
+        <div class="user-apartment-info">
+          <i class="ri-wallet-line"></i>
+          <p>Ksh <%= userBal %>
+          <span>Balance</span>
+        </div>
+      </div>
+      <div class="dash-info" style="display: flex; justify-content: space-between;">
+        <form method="GET" action="/dashboard">
+          <label for="year">Select Year:</label>
+          <select id="year" name="year" onchange="this.form.submit()">
+              <% for (let i = 2022; i <= new Date().getFullYear(); i++) { %>
+                  <option value="<%= i %>" <%= year == i ? 'selected' : '' %>><%= i %></option>
+              <% } %>
+          </select>
+      </form>
+      <div class="dash-name" style="font-size: .8rem;">
+<h3>Apt. Owner: <%= owner %></h3>
+      </div>
+      </div>
+     
+    <div class="user-transaction-container">
+      <h4>Recent Transactions</h4>
+      <hr />
+      <% if (transactions && transactions.length > 0) { %>
+        <% transactions.forEach(transaction => { %>
+          <div class="user-transaction-list">
+            <i class="ri-file-list-2-line"></i>
+            <div>
+              <p>Phone: <%= transaction.phoneNumber %></p>
+              <p>Receipt: <%= transaction.mpesaReceiptNumber %></p>
+              <p>Date: <%= transaction.transactionDate.toLocaleString() %></p>
+              <p>Amount: Ksh <%= transaction.amount %></p>
             </div>
-            <div class="transaction-lists">
-                <div class="transaction-list">
-                    <i class="ri-file-list-2-line"></i>
-                    <div>
-                        <p class="transaction-name">Gideon Rono</p>
-                        <p class="list-description">11/10/2024 . Via Paybill</p>
-                    </div>
-                </div>
-                <p>Ksh. 20,000</p>
-            </div>
-        </div>
+            
+          </div>
+          <hr />
+        <% }) %>
+      <% } else { %>
+        <p>No recent transactions.</p>
+      <% } %>
     </div>
-
-    <div class="emergency-container">
-        <div class="emergency-container-header">
-            <p>Emergency Alerts</p>
-        </div>
-        <hr class="headinghr">
-        <div class="emergency-lists">
-            <p>No active alerts. Stay safe!</p>
-        </div>
-    </div>
-</section>
+  
+      <div class="user-emergency-container">
+        <h4>Emergency Alerts</h4>
+        <hr />
+        <p>No active alerts. Stay safe!</p>
+      </div>
+    </section>
+    <%- include('partials/footer'); -%>
+  <% } %>
+  

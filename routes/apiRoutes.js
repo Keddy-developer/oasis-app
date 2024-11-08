@@ -10,7 +10,9 @@ const router = express.Router();
 
 // User-related routes
 
-router.post('/makepayment', requireAuth, checkUser, apiControllers.stkpush_post);
+router.post('/api/stkpush', requireAuth, checkUser, apiControllers.stkpush_post);
+router.post('/api/callback', apiControllers.apiCallback_post);
+
 
 
 
